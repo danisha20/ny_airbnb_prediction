@@ -144,9 +144,10 @@ def main():
     st.image(image, 'CityWise AI')
     #st.header("Vacation Rentals Price Predictor")
 
-    st.markdown("Select the options on the sidebar to determine the price of your Airbnb listing")
+    
     
     st.sidebar.header('Select criteria')
+    st.sidebar.markdown("Select the options on the sidebar to determine the price of your Airbnb listing")
     
     
     
