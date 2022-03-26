@@ -23,10 +23,11 @@ import osmnx as ox
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
 from PIL import Image
+import pathlib
 #from PIL import Image
 
 # loading the trained model
-pickle_in = open('./model_regressor.pkl', 'rb') 
+pickle_in = open(pathlib.Path.cwd().joinpath('model_regressor.pkl'), 'rb') 
 model_regressor = pickle.load(pickle_in)
 
 pickle_in2 = open('./scaler.sav', 'rb') 
@@ -39,9 +40,6 @@ model_regressor_upper = pickle.load(pickle_in)
 pickle_in = open('./model_regressor_lq.pkl', 'rb') 
 model_regressor_lower = pickle.load(pickle_in)
 @st.cache(suppress_st_warning=True) 
-
-
-
 
 def get_df(room_type_option,neighborhood,  minimum_nights, number_of_reviews, reviews_per_month, calculated_host_listings_count, availability_365, amenities_500, leisure_500, subway_500, natural_500):
  
