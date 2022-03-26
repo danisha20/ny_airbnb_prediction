@@ -27,7 +27,8 @@ import pathlib
 #from PIL import Image
 
 # loading the trained model
-pickle_in = open(pathlib.Path.cwd().joinpath('model_regressor.pkl'), 'rb') 
+
+pickle_in = open(pathlib.Path.cwd().joinpath('project_app','model_regressor.pkl'), 'rb') 
 model_regressor = pickle.load(pickle_in)
 
 pickle_in2 = open('./scaler.sav', 'rb') 
