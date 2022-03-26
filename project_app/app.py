@@ -43,6 +43,7 @@ pickle_in4 = open(pathlib.Path.cwd().joinpath('project_app','model_regressor_lq.
 model_regressor_lower = pickle.load(pickle_in4)
 @st.cache(suppress_st_warning=True) 
 
+
 def get_df(room_type_option,neighborhood,  minimum_nights, number_of_reviews, reviews_per_month, calculated_host_listings_count, availability_365, amenities_500, leisure_500, subway_500, natural_500):
  
 
@@ -132,7 +133,7 @@ def main():
     </div> 
     """
 
-    image = Image.open(pathlib.Path.cwd().joinpath('project_app','city.png'))
+    image = Image.open(pathlib.Path.cwd().joinpath('project_app','Webapp_image.png'))
     
     
 
@@ -162,7 +163,7 @@ def main():
     neighborhood = st.sidebar.selectbox('New York Neighbourhood',
                 ('Brooklyn', 'Manhattan', 'Queens','Bronx','Staten Island'))
     street = st.sidebar.text_input(" Street", "341 Eastern Pkwy")   
-    #tax_rate = st.sidebar.slider('Tax Rate', 0.0,1.0, 0.01 )
+    tax_rate = st.sidebar.slider('Tax Rate', 0.0,1.0, 0.01 )
 
 
 
@@ -257,12 +258,12 @@ def main():
         st.balloons()
         
         annual_revenue=np.round(pred[0]*120,2)
-        calculate_tax=np.round((pred[0]*120*10)/100,2)
-        col1, col2 , col3 = st.columns(3)
-        col1.metric("Price Estimate per night: $",str(np.round(pred[0], 2)))
-        st.header(f'The acceptable range: ${str(np.round(pred_lower[0], 2))} -  ${str(np.round(pred_upper[0], 2))}')
-        col2.metric("Revenue: $",str(annual_revenue))
-        col3.metric("Annual Assessed Tax: $", str(calculate_tax))
+        calculate_tax=np.round((pred[0]*120*tax_rate,2)
+        col1, col2  = st.columns(2)
+        st.write(f"Price Estimate per night: $ {str(np.round(pred[0], 2)}")
+        st.write(f'The acceptable range: ${str(np.round(pred_lower[0], 2))} -  ${str(np.round(pred_upper[0], 2))}')
+        col1.metric("Revenue: $",str(annual_revenue))
+        col2.metric("Annual Assessed Tax: $", str(calculate_tax))
         st.caption("Revenue and tax is calculated assuming that unit is rented for 120 days in a year ")
         #st.subheader(f'Assessed taxes: ${str(np.round(pred[0]*120*tax_rate, 2))}')
         
