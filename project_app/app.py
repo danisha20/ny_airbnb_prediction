@@ -133,21 +133,17 @@ def main():
     </div> 
     """
 
-    image = Image.open(pathlib.Path.cwd().joinpath('project_app','Webapp_image.png'))
+    image = Image.open(pathlib.Path.cwd().joinpath('project_app','city.png'))
     
-    
-
-
-    
-
 
     st.image(image, 'CityWise AI')
-    #st.header("Vacation Rentals Price Predictor")
+    st.header("A modern tool for urban planning")
+    st.subheader("Vacation Rentals Price Predictor")
 
     
     
     st.sidebar.header('Select criteria')
-    st.sidebar.markdown("Select the options on the sidebar to determine the price of your Airbnb listing")
+    st.sidebar.markdown("Select the options based on your listing to calculate the price")
     
     
     
@@ -164,7 +160,7 @@ def main():
     neighborhood = st.sidebar.selectbox('New York Neighbourhood',
                 ('Brooklyn', 'Manhattan', 'Queens','Bronx','Staten Island'))
     street = st.sidebar.text_input(" Street", "341 Eastern Pkwy")   
-    tax_rate = st.sidebar.slider('Tax Rate', 0.0,1.0, 0.01 )
+    tax_rate = st.sidebar.slider('Tax Rate', 0.1,1.0, 0.1 )
 
 
 
@@ -260,9 +256,11 @@ def main():
         
         annual_revenue=np.round(pred[0]*120,2)
         calculate_tax=np.round(pred[0]*120*tax_rate,2)
+        
+        st.subheader(f"Price Estimate per night: $ {str(np.round(pred[0], 2))}")
+        st.subheader(f'The acceptable range: ${str(np.round(pred_lower[0], 2))} -  ${str(np.round(pred_upper[0], 2))}')
+        
         col1, col2  = st.columns(2)
-        st.write(f"Price Estimate per night: $ {str(np.round(pred[0], 2))}")
-        st.write(f'The acceptable range: ${str(np.round(pred_lower[0], 2))} -  ${str(np.round(pred_upper[0], 2))}')
         col1.metric("Revenue: $",str(annual_revenue))
         col2.metric("Annual Assessed Tax: $", str(calculate_tax))
         st.caption("Revenue and tax is calculated assuming that unit is rented for 120 days in a year ")
