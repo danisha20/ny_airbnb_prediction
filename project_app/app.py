@@ -136,7 +136,7 @@ def main():
     image = Image.open(pathlib.Path.cwd().joinpath('project_app','city.png'))
     
 
-    st.image(image, 'CityWise AI')
+    st.image(image, 'CityWise AI', width = 200)
     st.header("A modern tool for urban planning")
     st.subheader("Vacation Rentals Price Predictor")
 
