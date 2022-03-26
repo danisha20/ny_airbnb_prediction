@@ -14,6 +14,31 @@ from scipy.stats.mstats import winsorize
 #test-training learning curve for each kNN and check low/high variance model. 
 from sklearn.model_selection import learning_curve
 
+# #feature scaling
+def scaler_transform(scaler_type, X, exclude_vars = ['latitude', 'longitude', 'id','NG_Brooklyn','NG_Manhattan','NG_Queens','NG_Bronx','NG_Staten Island','room_type_Private room','room_type_Shared room']):
+    '''
+    Transform the NON-object type data to the selected scaler
+    '''
+    X_copy = X.copy(deep = True)
+    if scaler_type == 'minmax':
+        scaler = MinMaxScaler()
+    elif scaler_type == 'standard':
+        scaler = StandardScaler()
+    X_notexcluded= X_copy.loc[:, ~X_copy.columns.isin(exclude_vars)]
+    X_withoutobj = X_notexcluded.select_dtypes(exclude=['object'])
+    X_withoutobj = X_withoutobj.add_suffix(f'_{scaler_type}')
+    # Fit transform the scaler if there are objects in dataset
+    if X_withoutobj.shape[1] > 0:
+        X_withoutobj = pd.DataFrame(scaler.fit_transform(X_withoutobj[X_withoutobj.columns]),
+                                        index=X_withoutobj.index,
+                                        columns=X_withoutobj.columns)
+        # Concatenate the rest of the data
+        X_withexcl = pd.concat([X_withoutobj, X.loc[:, X.columns.isin(exclude_vars)]], axis=1)
+        others = [x for x in X.select_dtypes('object') if x not in X_withexcl.columns]
+        X_final = pd.concat([X_withexcl,X[others]], axis=1)
+    return X_final, scaler
+
+
 def inverse_get_dummies(one_hot_columns,rest_columns,rename):
     """ Reverse function to get_dummies.
 
@@ -32,8 +57,8 @@ def inverse_get_dummies(one_hot_columns,rest_columns,rename):
 def decision_boundary_plot(classifier, X: pd.DataFrame, y: pd.DataFrame,  classes: list, 
                              h: float = 0.1, prob_dot_scale: int = 20, prob_dot_scale_power: int = 2,
                              true_dot_size: int = 30, pad: float = 1.0,
-                             prob_values: list = [0.4, 0.6, 0.8, 1.0]) -> None:
-    """_summary_
+                             prob_values: list = [0.3, 0.6,  1.0]) -> None:
+    """THis function creates a decision boundary between specified classes 
     Args:
         classifier (_type_): the classifier we want to visualize the decision boundary for.
         X (pd.DataFrame): data to plot
@@ -112,15 +137,16 @@ def decision_boundary_plot(classifier, X: pd.DataFrame, y: pd.DataFrame,  classe
 
 
 def plot_learning_curve( estimator, title, X, y, axes = None, ylim=None, cv=None, n_jobs=None,train_sizes=np.linspace(0.1, 1.0, 5)):
-    #initial configurations
+    #initial configurations for the plot
     if axes is None:
-        _, axes = plt.subplots(1, 3, figsize=(20, 5))
+        _, axes = plt.subplots(1, 1, figsize=(20, 5))
     axes[0].set_title(title)
     if ylim is not None:
         axes[0].set_ylim(*ylim)
     axes[0].set_xlabel("Training examples")
     axes[0].set_ylabel("Score")
 
+    #learning curve creation and statistics 
     train_sizes, train_scores, test_scores, fit_times, _ = learning_curve(estimator,X,y,cv = cv, n_jobs= n_jobs, train_sizes= train_sizes, return_times = True)
     train_scores_mean = np.mean(train_scores, axis=1)
     train_scores_std = np.std(train_scores, axis=1)
@@ -129,7 +155,7 @@ def plot_learning_curve( estimator, title, X, y, axes = None, ylim=None, cv=None
     fit_times_mean = np.mean(fit_times, axis=1)
     fit_times_std = np.std(fit_times, axis=1)
 
-    # Plot learning curve
+    # Plotting learning curve
     axes[0].grid()
     axes[0].fill_between(
         train_sizes,
@@ -153,35 +179,35 @@ def plot_learning_curve( estimator, title, X, y, axes = None, ylim=None, cv=None
     )
     axes[0].legend(loc="best")
 
-    # Plot n_samples vs fit_times
-    axes[1].grid()
-    axes[1].plot(train_sizes, fit_times_mean, "o-")
-    axes[1].fill_between(
-        train_sizes,
-        fit_times_mean - fit_times_std,
-        fit_times_mean + fit_times_std,
-        alpha=0.1,
-    )
-    axes[1].set_xlabel("Training examples")
-    axes[1].set_ylabel("fit_times")
-    axes[1].set_title("Scalability of the model")
+    # Plot the samples vs fit times.
+    # axes[1].grid()
+    # axes[1].plot(train_sizes, fit_times_mean, "o-")
+    # axes[1].fill_between(
+    #     train_sizes,
+    #     fit_times_mean - fit_times_std,
+    #     fit_times_mean + fit_times_std,
+    #     alpha=0.1,
+    # )
+    # axes[1].set_xlabel("Training examples")
+    # axes[1].set_ylabel("fit_times")
+    # axes[1].set_title("Scalability of the model")
 
-    # Plot fit_time vs score
-    fit_time_argsort = fit_times_mean.argsort()
-    fit_time_sorted = fit_times_mean[fit_time_argsort]
-    test_scores_mean_sorted = test_scores_mean[fit_time_argsort]
-    test_scores_std_sorted = test_scores_std[fit_time_argsort]
-    axes[2].grid()
-    axes[2].plot(fit_time_sorted, test_scores_mean_sorted, "o-")
-    axes[2].fill_between(
-        fit_time_sorted,
-        test_scores_mean_sorted - test_scores_std_sorted,
-        test_scores_mean_sorted + test_scores_std_sorted,
-        alpha=0.1,
-    )
-    axes[2].set_xlabel("fit_times")
-    axes[2].set_ylabel("Score")
-    axes[2].set_title("Performance of the model")
+    # # Plot fit_time vs score
+    # fit_time_argsort = fit_times_mean.argsort()
+    # fit_time_sorted = fit_times_mean[fit_time_argsort]
+    # test_scores_mean_sorted = test_scores_mean[fit_time_argsort]
+    # test_scores_std_sorted = test_scores_std[fit_time_argsort]
+    # axes[2].grid()
+    # axes[2].plot(fit_time_sorted, test_scores_mean_sorted, "o-")
+    # axes[2].fill_between(
+    #     fit_time_sorted,
+    #     test_scores_mean_sorted - test_scores_std_sorted,
+    #     test_scores_mean_sorted + test_scores_std_sorted,
+    #     alpha=0.1,
+    # )
+    # axes[2].set_xlabel("fit_times")
+    # axes[2].set_ylabel("Score")
+    # axes[2].set_title("Performance of the model")
 
     return plt
 
@@ -198,3 +224,13 @@ def print_confusion_matrix(confusion_matrix, class_names, figsize = (10,10),font
     plt.xlabel('Predicted')
     plt.title(f'{model_name} Confusion Matrix')
     return plt
+
+
+import seaborn as sns
+def hist_box_plot(df, col):
+	sns.set(style="darkgrid")
+	f, (ax_box, ax_hist) = plt.subplots(2, sharex=True, gridspec_kw={"height_ratios": (.15, .85)})
+	sns.boxplot(df[col], ax=ax_box)
+	sns.histplot(data=df[col], ax=ax_hist)
+	ax_box.set(xlabel='')
+	return plt.show()
