@@ -26,17 +26,17 @@ from PIL import Image
 #from PIL import Image
 
 # loading the trained model
-pickle_in = open('model_regressor.pkl', 'rb') 
+pickle_in = open('./model_regressor.pkl', 'rb') 
 model_regressor = pickle.load(pickle_in)
 
-pickle_in2 = open('scaler.sav', 'rb') 
+pickle_in2 = open('./scaler.sav', 'rb') 
 scaler_regressor = pickle.load(pickle_in2)
 
-pickle_in = open('model_regressor_uq.pkl', 'rb') 
+pickle_in = open('./model_regressor_uq.pkl', 'rb') 
 model_regressor_upper = pickle.load(pickle_in)
 
 
-pickle_in = open('model_regressor_lq.pkl', 'rb') 
+pickle_in = open('./model_regressor_lq.pkl', 'rb') 
 model_regressor_lower = pickle.load(pickle_in)
 @st.cache(suppress_st_warning=True) 
 
