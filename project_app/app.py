@@ -144,7 +144,7 @@ def main():
     
     
     st.sidebar.header('Select criteria')
-    st.sidebar.markdown("Select the options based on your listing to calculate the price")
+    st.sidebar.markdown("Select the options to determine the price of your listing.")
     
     
     
