@@ -234,6 +234,7 @@ def main():
         except:
             gdf_natural = 10
             
+        st.success('Done')
         st.write('Country Selected:', country)
         st.write('State Selected:', state)
         st.write('Neighborhood Selected:', neighborhood)
@@ -249,20 +250,17 @@ def main():
         st.write(f'Number of  zoos, theme-parks, water-parks, and stadiums: {leisure_500}')
         user_data = get_df(room_type_option,neighborhood, minimum_nights, number_of_reviews, reviews_per_month, calculated_host_listings_count, availability_365, amenities_500, leisure_500, subway_500, natural_500)
         
-        
-        
         pred, pred_upper, pred_lower = prediction(user_data)
         st.write('Price prediction per night')
 
-        st.success('Done')
+        
         st.balloons()
         
         annual_revenue=np.round(pred[0]*120,2)
         calculate_tax=np.round((pred[0]*120*10)/100,2)
         col1, col2 , col3 = st.columns(3)
         col1.metric("Price Estimate per night: $",str(np.round(pred[0], 2)))
-        st.write(f' The acceptable range goes from: ${str(np.round(pred_lower[0], 2))}  to  ${str(np.round(pred_upper[0], 2))}')
-        col2.metric("The acceptable range goes from: $",str(np.round(pred[0], 2)))
+        st.header(f'The acceptable range: ${str(np.round(pred_lower[0], 2))} -  ${str(np.round(pred_upper[0], 2))}')
         col2.metric("Revenue: $",str(annual_revenue))
         col3.metric("Annual Assessed Tax: $", str(calculate_tax))
         st.caption("Revenue and tax is calculated assuming that unit is rented for 120 days in a year ")
