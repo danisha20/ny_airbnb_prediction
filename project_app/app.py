@@ -22,7 +22,7 @@ import osmnx as ox
 
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
-
+from PIL import Image
 #from PIL import Image
 
 # loading the trained model
@@ -39,7 +39,6 @@ model_regressor_upper = pickle.load(pickle_in)
 pickle_in = open('model_regressor_lq.pkl', 'rb') 
 model_regressor_lower = pickle.load(pickle_in)
 @st.cache(suppress_st_warning=True) 
-
 
 
 
@@ -132,22 +131,38 @@ def main():
     <h1 style ="color:black;text-align:center;">CityWise AI App</h1> 
     </div> 
     """
+
+    image = Image.open('city.png')
     
+    
+
+
+    
+
+
+    st.image(image, 'CityWise AI', width = 200)
+    st.header("Vacation Rentals Price Predictor")
+
     st.markdown("Select the options on the sidebar to determine the price of your Airbnb listing")
+    
+    
+    
+    
+    
+    
 
     # display the front end aspect
-    st.title("CityWise AI")
+    
     #st.markdown(html_temp, unsafe_allow_html = True) 
     
-    
 
-    
     #city = st.sidebar.text_input("City", "Brooklyn")
     country = st.sidebar.selectbox("Country", ["United States"])
     state = st.sidebar.selectbox("State", ["New York"])
     neighborhood = st.sidebar.selectbox('New York Neighbourhood',
                 ('Brooklyn', 'Manhattan', 'Queens','Bronx','Staten Island'))
     street = st.sidebar.text_input(" Street", "341 Eastern Pkwy")   
+    tax_rate = st.sidebar.slider('Tax Rate', 0.0,1.0, 0.01 )
 
 
     geolocator = Nominatim(user_agent="GTA Lookup")
@@ -166,7 +181,7 @@ def main():
 
     map_data = pd.DataFrame({'lat': [latitude], 'lon': [longitude]})
 
-    st.map(map_data) 
+    st.map(map_data, zoom=15, use_container_width=True) 
   
 
     
@@ -176,11 +191,10 @@ def main():
     reviews_per_month = st.sidebar.text_input('Reviews per month', 0,58, 1 )
     calculated_host_listings_count = st.sidebar.text_input('Number of host listings', 1,327, 1 )
     availability_365= st.sidebar.text_input('Availability', 0,365, 1)
- 
-    
+    sideb = st.sidebar
 
     # when 'Predict' is clicked, make the prediction and store it 
-    if st.button("Predict Price"): 
+    if sideb.button("Predict Price"): 
         ox.config(log_console=True, use_cache=True)
 
         tag_leisure = {
@@ -219,10 +233,10 @@ def main():
         except:
             gdf_natural = 10
             
-        st.write('You selected the country :', country)
-        st.write('You selected the state :', state)
-        st.write('You selected the neigborhood :', neighborhood)
-        st.write('You selected the street :', street)
+        st.write('Country Selected:', country)
+        st.write('State Selected:', state)
+        st.write('Neighborhood Selected:', neighborhood)
+        st.write('Street Selected:', street)
         
         amenities_500 = gdf_amenities.shape[0]
         st.write(f'Number of restaurants, airports, malls, hotels or pubs: {amenities_500}')
@@ -242,7 +256,11 @@ def main():
         st.success('Done')
         st.balloons()
         st.subheader(f' Price Estimate per night: ${str(np.round(pred[0], 2))}')
-        st.subheader(f' Acceptable range goes from : ${str(np.round(pred_lower[0], 2))} to: ${str(np.round(pred_upper[0], 2))}')
+        st.subheader(f' The acceptable range goes from : ${str(np.round(pred_lower[0], 2))} to: ${str(np.round(pred_upper[0], 2))}')
+        st.subheader(f'Assessed taxes: ${str(np.round(pred[0]*120*tax_rate, 2))}')
+      
+        
+    
 if __name__=='__main__': 
     main()
 
