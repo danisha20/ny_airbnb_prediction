@@ -244,7 +244,7 @@ def main():
         subway_500 = gdf_subway.shape[0]
         st.write(f'Number of Train Stations: {subway_500}')
         natural_500 = gdf_natural.shape[0]
-        st.write(f'Number of Baches and Parks:{natural_500}')
+        st.write(f'Number of Baches and Parks: {natural_500}')
         leisure_500 = gdf_leisure.shape[0]
         st.write(f'Number of  zoos, theme-parks, water-parks, and stadiums: {leisure_500}')
         user_data = get_df(room_type_option,neighborhood, minimum_nights, number_of_reviews, reviews_per_month, calculated_host_listings_count, availability_365, amenities_500, leisure_500, subway_500, natural_500)
@@ -257,7 +257,7 @@ def main():
         calculate_tax=np.round(pred[0]*120*tax_rate,2)
         
         st.subheader(f"Price Estimate per night: $ {str(np.round(pred[0], 2))}")
-        st.subheader(f'The acceptable range is between($) {str(np.round(pred_lower[0], 2))} and {str(np.round(pred_upper[0], 2))}')
+        st.subheader(f'The acceptable range is between:$ {str(np.round(pred_lower[0], 2))} and {str(np.round(pred_upper[0], 2))}')
         
         col1, col2  = st.columns(2)
         col1.metric("Revenue: $",str(annual_revenue))
