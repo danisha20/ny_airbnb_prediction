@@ -35,12 +35,12 @@ pickle_in2 = open(pathlib.Path.cwd().joinpath('project_app','scaler.sav'), 'rb')
 scaler_regressor = pickle.load(pickle_in2)
 
 
-pickle_in = open(pathlib.Path.cwd().joinpath('project_app','model_regressor_uq.pkl'), 'rb') 
-model_regressor_upper = pickle.load(pickle_in)
+pickle_in3 = open(pathlib.Path.cwd().joinpath('project_app','model_regressor_uq.pkl'), 'rb') 
+model_regressor_upper = pickle.load(pickle_in3)
 
 
-pickle_in = open('./model_regressor_lq.pkl', 'rb') 
-model_regressor_lower = pickle.load(pickle_in)
+pickle_in4 = open(pathlib.Path.cwd().joinpath('project_app','model_regressor_lq.pkl'), 'rb') 
+model_regressor_lower = pickle.load(pickle_in4)
 @st.cache(suppress_st_warning=True) 
 
 def get_df(room_type_option,neighborhood,  minimum_nights, number_of_reviews, reviews_per_month, calculated_host_listings_count, availability_365, amenities_500, leisure_500, subway_500, natural_500):
