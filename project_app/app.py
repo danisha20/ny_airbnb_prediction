@@ -132,7 +132,7 @@ def main():
     </div> 
     """
 
-    image = Image.open('city.png')
+    image = Image.open(pathlib.Path.cwd().joinpath('project_app','city.png'))
     
     
 
@@ -162,7 +162,8 @@ def main():
     neighborhood = st.sidebar.selectbox('New York Neighbourhood',
                 ('Brooklyn', 'Manhattan', 'Queens','Bronx','Staten Island'))
     street = st.sidebar.text_input(" Street", "341 Eastern Pkwy")   
-    tax_rate = st.sidebar.slider('Tax Rate', 0.0,1.0, 0.01 )
+    #tax_rate = st.sidebar.slider('Tax Rate', 0.0,1.0, 0.01 )
+
 
 
     geolocator = Nominatim(user_agent="GTA Lookup")
@@ -255,9 +256,18 @@ def main():
 
         st.success('Done')
         st.balloons()
-        st.subheader(f' Price Estimate per night: ${str(np.round(pred[0], 2))}')
-        st.subheader(f' The acceptable range goes from : ${str(np.round(pred_lower[0], 2))} to: ${str(np.round(pred_upper[0], 2))}')
-        st.subheader(f'Assessed taxes: ${str(np.round(pred[0]*120*tax_rate, 2))}')
+        #st.subheader(f' Price Estimate per night: ${str(np.round(pred[0], 2))}')
+        #st.subheader(f' The acceptable range goes from : ${str(np.round(pred_lower[0], 2))} to: ${str(np.round(pred_upper[0], 2))}')
+        annual_revenue=np.round(pred[0]*120,2)
+        calculate_tax=np.round((pred[0]*120*10)/100,2)
+        
+        col1, col2,col3, col4 = st.columns(4)
+        col1.metric(f'Price Estimate per night: ${str(np.round(pred[0], 2))}')
+        col2.metric(f' The acceptable range goes from : ${str(np.round(pred_lower[0], 2))} to: ${str(np.round(pred_upper[0], 2))}')
+        col3.metric("Revenue",str(annual_revenue))
+        col4.metric("Annual Assessed Tax", str(calculate_tax))
+        st.caption("Revenue and tax is calculated assuming that unit is rented for 120 days in a year ")
+        #st.subheader(f'Assessed taxes: ${str(np.round(pred[0]*120*tax_rate, 2))}')
       
         
     
