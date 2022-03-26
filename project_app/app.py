@@ -31,10 +31,11 @@ import pathlib
 pickle_in = open(pathlib.Path.cwd().joinpath('project_app','model_regressor.pkl'), 'rb') 
 model_regressor = pickle.load(pickle_in)
 
-pickle_in2 = open('./scaler.sav', 'rb') 
+pickle_in2 = open(pathlib.Path.cwd().joinpath('project_app','scaler.sav'), 'rb') 
 scaler_regressor = pickle.load(pickle_in2)
 
-pickle_in = open('./model_regressor_uq.pkl', 'rb') 
+
+pickle_in = open(pathlib.Path.cwd().joinpath('project_app','model_regressor_uq.pkl'), 'rb') 
 model_regressor_upper = pickle.load(pickle_in)
 
 
