@@ -259,12 +259,12 @@ def main():
         calculate_tax=np.round(pred[0]*120*tax_rate,2)
         
         st.subheader(f"Price Estimate per night: $ {str(np.round(pred[0], 2))}")
-        st.subheader(f'The acceptable range: $ {str(np.round(pred_lower[0], 2))} -  $ {str(np.round(pred_upper[0], 2))}')
+        st.subheader(f'The acceptable range is between {str(np.round(pred_lower[0], 2))} and {str(np.round(pred_upper[0], 2))}')
         
         col1, col2  = st.columns(2)
         col1.metric("Revenue: $",str(annual_revenue))
         col2.metric("Annual Assessed Tax: $", str(calculate_tax))
-        st.caption("Revenue and tax is calculated assuming that unit is rented for 120 days in a year ")
+        st.caption("Revenue and tax is calculated assuming that the unit is rented for 120 days in a year ")
         #st.subheader(f'Assessed taxes: ${str(np.round(pred[0]*120*tax_rate, 2))}')
         
     
