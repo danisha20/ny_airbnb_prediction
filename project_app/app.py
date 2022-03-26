@@ -158,7 +158,7 @@ def main():
     #city = st.sidebar.text_input("City", "Brooklyn")
     country = st.sidebar.selectbox("Country", ["United States"])
     state = st.sidebar.selectbox("State", ["New York"])
-    neighborhood = st.sidebar.selectbox('New York Neighbourhood',
+    neighborhood = st.sidebar.selectbox('Neighbourhood',
                 ('Brooklyn', 'Manhattan', 'Queens','Bronx','Staten Island'))
     street = st.sidebar.text_input(" Street", "341 Eastern Pkwy")   
     tax_rate = st.sidebar.slider('Tax Rate', 0.1,1.0, 0.1 )
@@ -250,8 +250,6 @@ def main():
         user_data = get_df(room_type_option,neighborhood, minimum_nights, number_of_reviews, reviews_per_month, calculated_host_listings_count, availability_365, amenities_500, leisure_500, subway_500, natural_500)
         
         pred, pred_upper, pred_lower = prediction(user_data)
-        st.write('Price prediction per night')
-
         
         st.balloons()
         
@@ -259,7 +257,7 @@ def main():
         calculate_tax=np.round(pred[0]*120*tax_rate,2)
         
         st.subheader(f"Price Estimate per night: $ {str(np.round(pred[0], 2))}")
-        st.subheader(f'The acceptable range is between {str(np.round(pred_lower[0], 2))} and {str(np.round(pred_upper[0], 2))}')
+        st.subheader(f'The acceptable range is between($) {str(np.round(pred_lower[0], 2))} and {str(np.round(pred_upper[0], 2))}')
         
         col1, col2  = st.columns(2)
         col1.metric("Revenue: $",str(annual_revenue))
