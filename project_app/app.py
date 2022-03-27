@@ -154,15 +154,32 @@ def main():
     state = st.sidebar.selectbox("State", ["New York"])
     neighborhood = st.sidebar.selectbox('Neighbourhood',
                 ('Brooklyn', 'Manhattan', 'Queens','Bronx','Staten Island'))
-    street = st.sidebar.text_input(" Street", "341 Eastern Pkwy")   
-    days_to_be_rented = st.sidebar.slider('Days in a Year Expected to Rent', 1,365, 1 )
+    street = st.sidebar.text_input(" Street", "341 Eastern Pkwy")
 
+    days_to_be_rented = st.sidebar.slider('Days in a Year Expected to Rent', 1,365, 1 )
+    if days_to_be_rented:
+        st.success('Ok!')
     room_type_option = st.sidebar.selectbox('Room Type',('Shared Room','Private Room','Entire house'))
+    if room_type_option:
+        st.success('Ok!')
     minimum_nights = st.sidebar.slider('Minimum Nights', 0,30, 1 )
+    if minimum_nights:
+        st.success('Ok!')
     number_of_reviews = st.sidebar.slider('Number of reviews', 0,629, 1 )
+    if number_of_reviews:
+        st.success('Ok!')
     reviews_per_month = st.sidebar.slider('Reviews per month', 0,58, 1 )
+    if reviews_per_month:
+        st.success('Ok!')
     calculated_host_listings_count = st.sidebar.slider('Number of host listings', 1,327, 1 )
+    if calculated_host_listings_count:
+        st.success('Ok!')
     availability_365= st.sidebar.slider('Availability (must be greater than expected days to rent)', 0,365, 1)
+    if availability_365 < days_to_be_rented:
+        st.write("Please check that availability is greater than expected days to rent")
+    else:
+        st.success('Ok!')
+        
     sideb = st.sidebar
 
 
@@ -176,6 +193,8 @@ def main():
         longitude = location.longitude
     except:
         st.error('There is an error with your location. Please check.')
+        if street: # If user enters street, do 👇
+            st.write(f'Please check that the {street} is actually in {neighborhood}!')
         #e = RuntimeError('This is an exception of type RuntimeError')
         #st.exception(e)
         #exit ()
@@ -226,11 +245,14 @@ def main():
         except:
             gdf_natural = 10
             
-        st.success('Done')
+        st.success('Prediction Complete!')
         st.write('Country Selected:', country)
         st.write('State Selected:', state)
         st.write('Neighborhood Selected:', neighborhood)
         st.write('Street Selected:', street)
+        
+        
+        
         
         amenities_500 = gdf_amenities.shape[0]
         st.write(f'Number of restaurants, airports, malls, hotels or pubs: {amenities_500}')
