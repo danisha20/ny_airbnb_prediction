@@ -288,20 +288,21 @@ def main():
         st.info(street)
  
         
-        fig = px.bar(all_geom_count, x='type', y='geometry')
+        fig = px.bar(all_geom_count, x='type', y='geometry',
+                     labels=dict( geometry="count"))
         st.plotly_chart(fig)
         
         amenities_500 = gdf_amenities.shape[0]
         st.write('Number of restaurants, airports, malls, hotels or pubs:')
         st.info(amenities_500)
         subway_500 = gdf_subway.shape[0]
-        st.write(f'Number of Train Stations: {subway_500}')
+        st.write(f'Number of Train Stations:')
         st.info(subway_500)
         natural_500 = gdf_natural.shape[0]
-        st.write(f'Number of Baches and Parks: {natural_500}')
+        st.write(f'Number of Baches and Parks:')
         st.info(natural_500)
         leisure_500 = gdf_leisure.shape[0]
-        st.write(f'Number of  zoos, theme-parks, water-parks, and stadiums: {leisure_500}')
+        st.write(f'Number of  zoos, theme-parks, water-parks, and stadiums:')
         st.info(leisure_500)
   
         
@@ -316,9 +317,10 @@ def main():
         
 
         st.header('Price of Listing')
-        st.info(f"Price Estimate per night: $ {str(np.round(pred[0], 2))}")
-        st.info(f'The acceptable range is between:$ {str(np.round(pred_lower[0], 2))} and {str(np.round(pred_upper[0], 2))}')
-        
+        cola, colb = st.columns(2)
+        cola.info(f"Price Estimate per night: $ {str(np.round(pred[0], 2))}")
+        colb.info(f'The acceptable range is between:$ {str(np.round(pred_lower[0], 2))} and {str(np.round(pred_upper[0], 2))}')
+
         
         st.header('Revenue and Tax Rate Calculated')
         annual_revenue=np.round(pred[0]*days_to_be_rented,2)
@@ -326,7 +328,7 @@ def main():
         col1, col2 = st.columns(2)
         col1.info(f"Revenue: $ {str(annual_revenue)}")
         col2.info(f"Annual Assessed Tax: $ {str(calculate_tax)}")
-        st.caption(f"Tax is calculated considering a tax rate in {neighborhood} of {tax_rate}. ")
+        st.caption(f"Tax is calculated considering a tax rate in {neighborhood} of {tax_rate*100} %. ")
         st.caption(f"Revenue is calculated assuming that the unit is rented for {days_to_be_rented} days in a year.")
 
     
