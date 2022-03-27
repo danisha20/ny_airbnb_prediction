@@ -240,10 +240,6 @@ def main():
             natural_500 = 10
             
         def processs_all_geom(gdf_amenities, gdf_leisure,gdf_subway, gdf_natural):
-            gdf_amenities = gdf_amenities.loc[:,['amenity','geometry']]
-            gdf_leisure = gdf_leisure.loc[:,['leisure','geometry']]
-            gdf_subway = gdf_subway.loc[:,['building','geometry']]
-            gdf_natural = gdf_natural.loc[:,['natural','geometry']]
             gdf_amenities['Center_point'] = gdf_amenities['geometry'].centroid
             gdf_leisure['Center_point'] = gdf_leisure['geometry'].centroid
             gdf_subway['Center_point'] = gdf_subway['geometry'].centroid
