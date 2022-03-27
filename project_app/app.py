@@ -240,10 +240,10 @@ def main():
             gdf_natural = 10
             
         st.success('Prediction Complete!')
-        st.caption('Country Selected:', country)
-        st.caption('State Selected:', state)
-        st.caption('Neighborhood Selected:', neighborhood)
-        st.caption('Street Selected:', street)
+        st.caption(f'Country Selected: {country}')
+        st.caption(f'State Selected: {state}')
+        st.caption(f'Neighborhood Selected: {neighborhood}')
+        st.caption(f'Street Selected: {street}')
         st.caption(f"Tax is calculated considering a tax rate in {neighborhood} of {tax_rate}. ")
         st.caption(f"Revenue is calculated assuming that the unit is rented for {days_to_be_rented} days in a year.")
         
