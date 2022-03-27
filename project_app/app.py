@@ -190,8 +190,6 @@ def main():
     availability_365= st.sidebar.slider('Availability (must be greater than expected days to rent)', 0,365, 1)
     if availability_365 < days_to_be_rented:
         st.sidebar.warning("Please check that availability is greater than expected days to rent")
-    else:
-        st.sidebar.info('Ok!')
     room_type_option = st.sidebar.selectbox('Room Type',('Shared Room','Private Room','Entire house'))
     minimum_nights = st.sidebar.slider('Minimum Nights', 0,30, 1 )
     number_of_reviews = st.sidebar.slider('Number of reviews', 0,629, 1 )
