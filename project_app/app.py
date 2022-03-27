@@ -244,9 +244,7 @@ def main():
         st.caption(f'State Selected: {state}')
         st.caption(f'Neighborhood Selected: {neighborhood}')
         st.caption(f'Street Selected: {street}')
-        st.caption(f"Tax is calculated considering a tax rate in {neighborhood} of {tax_rate}. ")
-        st.caption(f"Revenue is calculated assuming that the unit is rented for {days_to_be_rented} days in a year.")
-        
+ 
         
         
         
@@ -277,13 +275,18 @@ def main():
         # display the front end aspect
         #st.markdown(html_temp, unsafe_allow_html = True) 
         
-        annual_revenue=np.round(pred[0]*120,2)
-        calculate_tax=np.round(pred[0]*days_to_be_rented*tax_rate,2)
 
-        
+        st.header('Price of Listing')
         st.info(f"Price Estimate per night: $ {str(np.round(pred[0], 2))}")
         st.info(f'The acceptable range is between:$ {str(np.round(pred_lower[0], 2))} and {str(np.round(pred_upper[0], 2))}')
         
+        
+        st.header('Revenue and Tax Rate Calculated')
+        st.caption(f"Tax is calculated considering a tax rate in {neighborhood} of {tax_rate}. ")
+        st.caption(f"Revenue is calculated assuming that the unit is rented for {days_to_be_rented} days in a year.")
+        
+        annual_revenue=np.round(pred[0]*120,2)
+        calculate_tax=np.round(pred[0]*days_to_be_rented*tax_rate,2)
         col1, col2  = st.columns(2)
         col1.info("Revenue: $",str(annual_revenue))
         col2.info("Annual Assessed Tax: $", str(calculate_tax))
