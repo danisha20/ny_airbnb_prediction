@@ -157,28 +157,19 @@ def main():
     street = st.sidebar.text_input(" Street", "341 Eastern Pkwy")
 
     days_to_be_rented = st.sidebar.slider('Days in a Year Expected to Rent', 1,365, 1 )
-    if days_to_be_rented:
-        st.sidebar.info('Ok!')
-    room_type_option = st.sidebar.selectbox('Room Type',('Shared Room','Private Room','Entire house'))
-    if room_type_option:
-        st.sidebar.info('Ok!')
-    minimum_nights = st.sidebar.slider('Minimum Nights', 0,30, 1 )
-    if minimum_nights:
-        st.sidebar.info('Ok!')
-    number_of_reviews = st.sidebar.slider('Number of reviews', 0,629, 1 )
-    if number_of_reviews:
-        st.sidebar.info('Ok!')
-    reviews_per_month = st.sidebar.slider('Reviews per month', 0,58, 1 )
-    if reviews_per_month:
-        st.sidebar.info('Ok!')
-    calculated_host_listings_count = st.sidebar.slider('Number of host listings', 1,327, 1 )
-    if calculated_host_listings_count:
-        st.sidebar.info('Ok!')
     availability_365= st.sidebar.slider('Availability (must be greater than expected days to rent)', 0,365, 1)
     if availability_365 < days_to_be_rented:
         st.sidebar.warning("Please check that availability is greater than expected days to rent")
     else:
         st.sidebar.info('Ok!')
+    room_type_option = st.sidebar.selectbox('Room Type',('Shared Room','Private Room','Entire house'))
+    minimum_nights = st.sidebar.slider('Minimum Nights', 0,30, 1 )
+    number_of_reviews = st.sidebar.slider('Number of reviews', 0,629, 1 )
+
+    reviews_per_month = st.sidebar.slider('Reviews per month', 0,58, 1 )
+    calculated_host_listings_count = st.sidebar.slider('Number of host listings', 1,327, 1 )
+    
+
         
     sideb = st.sidebar
 
@@ -281,8 +272,8 @@ def main():
         calculate_tax=np.round(pred[0]*days_to_be_rented*tax_rate,2)
 
         
-        st.subheader(f"Price Estimate per night: $ {str(np.round(pred[0], 2))}")
-        st.subheader(f'The acceptable range is between:$ {str(np.round(pred_lower[0], 2))} and {str(np.round(pred_upper[0], 2))}')
+        st.info(f"Price Estimate per night: $ {str(np.round(pred[0], 2))}")
+        st.info(f'The acceptable range is between:$ {str(np.round(pred_lower[0], 2))} and {str(np.round(pred_upper[0], 2))}')
         
         col1, col2  = st.columns(2)
         col1.metric("Revenue: $",str(annual_revenue))
