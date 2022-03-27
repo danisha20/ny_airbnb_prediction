@@ -61,24 +61,28 @@ def get_df(room_type_option,neighborhood,  minimum_nights, number_of_reviews, re
           NG_Manhattan=1
           NG_Queens=0
           NG_Staten_Island=0
+          tax_rate=0.12
       
     elif (neighborhood=='Brooklyn'):
           NG_Brooklyn=1
           NG_Manhattan=0
           NG_Queens=0
           NG_Staten_Island=0
+          tax_rate=0.14
           
     elif (neighborhood=='Queens'):
         NG_Brooklyn=0
         NG_Manhattan=0
         NG_Queens=1
         NG_Staten_Island=0
+        tax_rate=0.11
         
     elif neighborhood=='Staten Island':
         NG_Brooklyn=0
         NG_Manhattan=0
         NG_Queens=0
         NG_Staten_Island=1
+        tax_rate=0.10
     else:
         NG_Brooklyn=0
         NG_Manhattan=0
@@ -112,7 +116,7 @@ def get_df(room_type_option,neighborhood,  minimum_nights, number_of_reviews, re
                                             index=df_report.index,
                                             columns=df_report.columns)
     
-    return df_std
+    return df_std, tax_rate
 
 def prediction(df):
     pred = model_regressor.predict(df)
@@ -147,13 +151,8 @@ def main():
     st.sidebar.markdown("Select the options to determine the price of your listing.")
     
     
-    
-    
-
     # display the front end aspect
-    
     #st.markdown(html_temp, unsafe_allow_html = True) 
-    
 
     #city = st.sidebar.text_input("City", "Brooklyn")
     country = st.sidebar.selectbox("Country", ["United States"])
@@ -161,7 +160,7 @@ def main():
     neighborhood = st.sidebar.selectbox('Neighbourhood',
                 ('Brooklyn', 'Manhattan', 'Queens','Bronx','Staten Island'))
     street = st.sidebar.text_input(" Street", "341 Eastern Pkwy")   
-    tax_rate = st.sidebar.slider('Tax Rate', 0.1,1.0, 0.1 )
+    days_to_be_rented = st.sidebar.slider('Days in a Year Expected to Rent', 1,365, 1 )
 
 
 
@@ -186,11 +185,11 @@ def main():
 
     
     room_type_option = st.sidebar.selectbox('Room Type',('Shared Room','Private Room','Entire house'))
-    minimum_nights = st.sidebar.text_input('Minimum Nights', 0,30, 1 )
-    number_of_reviews = st.sidebar.text_input('Number of reviews', 0,629, 1 )
-    reviews_per_month = st.sidebar.text_input('Reviews per month', 0,58, 1 )
-    calculated_host_listings_count = st.sidebar.text_input('Number of host listings', 1,327, 1 )
-    availability_365= st.sidebar.text_input('Availability', 0,365, 1)
+    minimum_nights = st.sidebar.slider('Minimum Nights', 0,30, 1 )
+    number_of_reviews = st.sidebar.slider('Number of reviews', 0,629, 1 )
+    reviews_per_month = st.sidebar.slider('Reviews per month', 0,58, 1 )
+    calculated_host_listings_count = st.sidebar.slider('Number of host listings', 1,327, 1 )
+    availability_365= st.sidebar.slider('Availability', 0,365, 1)
     sideb = st.sidebar
 
     # when 'Predict' is clicked, make the prediction and store it 
@@ -247,14 +246,15 @@ def main():
         st.write(f'Number of Baches and Parks: {natural_500}')
         leisure_500 = gdf_leisure.shape[0]
         st.write(f'Number of  zoos, theme-parks, water-parks, and stadiums: {leisure_500}')
-        user_data = get_df(room_type_option,neighborhood, minimum_nights, number_of_reviews, reviews_per_month, calculated_host_listings_count, availability_365, amenities_500, leisure_500, subway_500, natural_500)
+        user_data, tax_rate  = get_df(room_type_option,neighborhood, minimum_nights, number_of_reviews, reviews_per_month, calculated_host_listings_count, availability_365, amenities_500, leisure_500, subway_500, natural_500)
         
         pred, pred_upper, pred_lower = prediction(user_data)
         
         st.balloons()
         
         annual_revenue=np.round(pred[0]*120,2)
-        calculate_tax=np.round(pred[0]*120*tax_rate,2)
+        calculate_tax=np.round(pred[0]*days_to_be_rented*tax_rate,2)
+
         
         st.subheader(f"Price Estimate per night: $ {str(np.round(pred[0], 2))}")
         st.subheader(f'The acceptable range is between:$ {str(np.round(pred_lower[0], 2))} and {str(np.round(pred_upper[0], 2))}')
@@ -262,7 +262,7 @@ def main():
         col1, col2  = st.columns(2)
         col1.metric("Revenue: $",str(annual_revenue))
         col2.metric("Annual Assessed Tax: $", str(calculate_tax))
-        st.caption("Revenue and tax is calculated assuming that the unit is rented for 120 days in a year ")
+        #st.caption("Revenue and tax is calculated assuming that the unit is rented for 120 days in a year ")
         #st.subheader(f'Assessed taxes: ${str(np.round(pred[0]*120*tax_rate, 2))}')
         
     
