@@ -158,27 +158,27 @@ def main():
 
     days_to_be_rented = st.sidebar.slider('Days in a Year Expected to Rent', 1,365, 1 )
     if days_to_be_rented:
-        st.success('Ok!')
+        st.sidebar.success('Ok!')
     room_type_option = st.sidebar.selectbox('Room Type',('Shared Room','Private Room','Entire house'))
     if room_type_option:
-        st.success('Ok!')
+        st.sidebar.success('Ok!')
     minimum_nights = st.sidebar.slider('Minimum Nights', 0,30, 1 )
     if minimum_nights:
-        st.success('Ok!')
+        st.sidebar.success('Ok!')
     number_of_reviews = st.sidebar.slider('Number of reviews', 0,629, 1 )
     if number_of_reviews:
-        st.success('Ok!')
+        st.sidebar.success('Ok!')
     reviews_per_month = st.sidebar.slider('Reviews per month', 0,58, 1 )
     if reviews_per_month:
-        st.success('Ok!')
+        st.sidebar.success('Ok!')
     calculated_host_listings_count = st.sidebar.slider('Number of host listings', 1,327, 1 )
     if calculated_host_listings_count:
-        st.success('Ok!')
+        st.sidebar.success('Ok!')
     availability_365= st.sidebar.slider('Availability (must be greater than expected days to rent)', 0,365, 1)
     if availability_365 < days_to_be_rented:
-        st.write("Please check that availability is greater than expected days to rent")
+        st.sidebar.write("Please check that availability is greater than expected days to rent")
     else:
-        st.success('Ok!')
+        st.sidebar.success('Ok!')
         
     sideb = st.sidebar
 
