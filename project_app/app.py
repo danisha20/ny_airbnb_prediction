@@ -169,9 +169,9 @@ def main():
         longitude = location.longitude
     except:
         st.error('There is an error with your location. Please check.')
-        e = RuntimeError('This is an exception of type RuntimeError')
-        st.exception(e)
-        exit ()
+        #e = RuntimeError('This is an exception of type RuntimeError')
+        #st.exception(e)
+        #exit ()
 
     map_data = pd.DataFrame({'lat': [latitude], 'lon': [longitude]})
 
