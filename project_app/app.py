@@ -150,11 +150,14 @@ def main():
 
 
     #city = st.sidebar.text_input("City", "Brooklyn")
-    country = st.sidebar.selectbox("Country", ["United States"])
-    state = st.sidebar.selectbox("State", ["New York"])
+    street = st.sidebar.text_input(" Street", "341 Eastern Pkwy")
     neighborhood = st.sidebar.selectbox('Neighbourhood',
                 ('Brooklyn', 'Manhattan', 'Queens','Bronx','Staten Island'))
-    street = st.sidebar.text_input(" Street", "341 Eastern Pkwy")
+    state = st.sidebar.selectbox("State", ["New York"])
+    country = st.sidebar.selectbox("Country", ["United States"])
+    
+
+    
 
     days_to_be_rented = st.sidebar.slider('Days in a Year Expected to Rent', 1,365, 1 )
     availability_365= st.sidebar.slider('Availability (must be greater than expected days to rent)', 0,365, 1)
