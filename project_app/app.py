@@ -157,6 +157,13 @@ def main():
     street = st.sidebar.text_input(" Street", "341 Eastern Pkwy")   
     days_to_be_rented = st.sidebar.slider('Days in a Year Expected to Rent', 1,365, 1 )
 
+    room_type_option = st.sidebar.selectbox('Room Type',('Shared Room','Private Room','Entire house'))
+    minimum_nights = st.sidebar.slider('Minimum Nights', 0,30, 1 )
+    number_of_reviews = st.sidebar.slider('Number of reviews', 0,629, 1 )
+    reviews_per_month = st.sidebar.slider('Reviews per month', 0,58, 1 )
+    calculated_host_listings_count = st.sidebar.slider('Number of host listings', 1,327, 1 )
+    availability_365= st.sidebar.slider('Availability (must be greater than expected days to rent)', 0,365, 1)
+    sideb = st.sidebar
 
 
     geolocator = Nominatim(user_agent="GTA Lookup")
@@ -178,14 +185,6 @@ def main():
     st.map(map_data, zoom=15, use_container_width=True) 
   
 
-    
-    room_type_option = st.sidebar.selectbox('Room Type',('Shared Room','Private Room','Entire house'))
-    minimum_nights = st.sidebar.slider('Minimum Nights', 0,30, 1 )
-    number_of_reviews = st.sidebar.slider('Number of reviews', 0,629, 1 )
-    reviews_per_month = st.sidebar.slider('Reviews per month', 0,58, 1 )
-    calculated_host_listings_count = st.sidebar.slider('Number of host listings', 1,327, 1 )
-    availability_365= st.sidebar.slider('Availability (must be greater than expected days to rent)', 0,365, 1)
-    sideb = st.sidebar
 
     # when 'Predict' is clicked, make the prediction and store it 
     if sideb.button("Predict Price"): 
