@@ -265,9 +265,18 @@ def main():
         
         all_geom, all_geom_count = processs_all_geom(gdf_amenities, gdf_leisure,gdf_subway, gdf_natural)
         fig = px.bar(all_geom_count, x='type', y='geometry')
-        fig.show()
+        st.plotly_chart(fig)
             
         st.success('Prediction Complete!')
+        
+        html_temp = """ 
+        <div style ="background-color:gray;padding:13px"> 
+        <h1 style ="color:black;text-align:center;">Report</h1> 
+        </div> 
+        """
+    
+        # display the front end aspect
+        st.markdown(html_temp, unsafe_allow_html = True) 
         st.write('Country Selected:')
         st.info(country)
         st.write('State Selected')
@@ -298,14 +307,7 @@ def main():
         
         st.balloons()
         
-        html_temp = """ 
-        <div style ="background-color:gray;padding:13px"> 
-        <h1 style ="color:black;text-align:center;">Report</h1> 
-        </div> 
-        """
-    
-        # display the front end aspect
-        st.markdown(html_temp, unsafe_allow_html = True) 
+
         
 
         st.header('Price of Listing')
@@ -314,13 +316,10 @@ def main():
         
         
         st.header('Revenue and Tax Rate Calculated')
-
-        
         annual_revenue=np.round(pred[0]*days_to_be_rented,2)
         calculate_tax=np.round(pred[0]*days_to_be_rented*tax_rate,2)
-        col1, col2  = st.columns(2)
-        col1.info("Revenue: $",str(annual_revenue))
-        col2.info("Annual Assessed Tax: $", str(calculate_tax))
+        st.info("Revenue: $",str(annual_revenue))
+        st.info("Annual Assessed Tax: $", str(calculate_tax))
         st.caption(f"Tax is calculated considering a tax rate in {neighborhood} of {tax_rate}. ")
         st.caption(f"Revenue is calculated assuming that the unit is rented for {days_to_be_rented} days in a year.")
 
