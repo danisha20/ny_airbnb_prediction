@@ -131,11 +131,7 @@ def prediction(df):
 def main():
     
 
-    html_temp = """ 
-    <div style ="background-color:gray;padding:13px"> 
-    <h1 style ="color:black;text-align:center;">CityWise AI App</h1> 
-    </div> 
-    """
+
 
     image = Image.open(pathlib.Path.cwd().joinpath('project_app','city.png'))
     
@@ -151,8 +147,7 @@ def main():
     st.sidebar.markdown("Select the options to determine the price of your listing.")
     
     
-    # display the front end aspect
-    #st.markdown(html_temp, unsafe_allow_html = True) 
+
 
     #city = st.sidebar.text_input("City", "Brooklyn")
     country = st.sidebar.selectbox("Country", ["United States"])
@@ -189,7 +184,7 @@ def main():
     number_of_reviews = st.sidebar.slider('Number of reviews', 0,629, 1 )
     reviews_per_month = st.sidebar.slider('Reviews per month', 0,58, 1 )
     calculated_host_listings_count = st.sidebar.slider('Number of host listings', 1,327, 1 )
-    availability_365= st.sidebar.slider('Availability', 0,365, 1)
+    availability_365= st.sidebar.slider('Availability (must be greater than expected days to rent)', 0,365, 1)
     sideb = st.sidebar
 
     # when 'Predict' is clicked, make the prediction and store it 
@@ -252,6 +247,15 @@ def main():
         
         st.balloons()
         
+        html_temp = """ 
+        <div style ="background-color:gray;padding:13px"> 
+        <h1 style ="color:black;text-align:center;">CityWise AI App</h1> 
+        </div> 
+        """
+    
+        # display the front end aspect
+        #st.markdown(html_temp, unsafe_allow_html = True) 
+        
         annual_revenue=np.round(pred[0]*120,2)
         calculate_tax=np.round(pred[0]*days_to_be_rented*tax_rate,2)
 
@@ -262,7 +266,8 @@ def main():
         col1, col2  = st.columns(2)
         col1.metric("Revenue: $",str(annual_revenue))
         col2.metric("Annual Assessed Tax: $", str(calculate_tax))
-        #st.caption("Revenue and tax is calculated assuming that the unit is rented for 120 days in a year ")
+        st.caption(f"Tax is calculated considering a tax rate in {neighborhood} of {tax_rate}. ")
+        st.caption(f"Revenue is calculated assuming that the unit is rented for {days_to_be_rented} days in a year.")
         #st.subheader(f'Assessed taxes: ${str(np.round(pred[0]*120*tax_rate, 2))}')
         
     
