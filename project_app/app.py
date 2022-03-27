@@ -240,22 +240,28 @@ def main():
             gdf_natural = 10
             
         st.success('Prediction Complete!')
-        st.write('Country Selected:', country)
-        st.write('State Selected:', state)
-        st.write('Neighborhood Selected:', neighborhood)
-        st.write('Street Selected:', street)
+        st.caption('Country Selected:', country)
+        st.caption('State Selected:', state)
+        st.caption('Neighborhood Selected:', neighborhood)
+        st.caption('Street Selected:', street)
+        st.caption(f"Tax is calculated considering a tax rate in {neighborhood} of {tax_rate}. ")
+        st.caption(f"Revenue is calculated assuming that the unit is rented for {days_to_be_rented} days in a year.")
         
         
         
         
         amenities_500 = gdf_amenities.shape[0]
-        st.write(f'Number of restaurants, airports, malls, hotels or pubs: {amenities_500}')
+        st.write('Number of restaurants, airports, malls, hotels or pubs:')
+        st.info(amenities_500)
         subway_500 = gdf_subway.shape[0]
         st.write(f'Number of Train Stations: {subway_500}')
+        st.info(subway_500)
         natural_500 = gdf_natural.shape[0]
         st.write(f'Number of Baches and Parks: {natural_500}')
+        st.info(natural_500)
         leisure_500 = gdf_leisure.shape[0]
         st.write(f'Number of  zoos, theme-parks, water-parks, and stadiums: {leisure_500}')
+        st.info(leisure_500)
         user_data, tax_rate  = get_df(room_type_option,neighborhood, minimum_nights, number_of_reviews, reviews_per_month, calculated_host_listings_count, availability_365, amenities_500, leisure_500, subway_500, natural_500)
         
         pred, pred_upper, pred_lower = prediction(user_data)
@@ -279,12 +285,9 @@ def main():
         st.info(f'The acceptable range is between:$ {str(np.round(pred_lower[0], 2))} and {str(np.round(pred_upper[0], 2))}')
         
         col1, col2  = st.columns(2)
-        col1.metric("Revenue: $",str(annual_revenue))
-        col2.metric("Annual Assessed Tax: $", str(calculate_tax))
-        st.caption(f"Tax is calculated considering a tax rate in {neighborhood} of {tax_rate}. ")
-        st.caption(f"Revenue is calculated assuming that the unit is rented for {days_to_be_rented} days in a year.")
-        #st.subheader(f'Assessed taxes: ${str(np.round(pred[0]*120*tax_rate, 2))}')
-        
+        col1.info("Revenue: $",str(annual_revenue))
+        col2.info("Annual Assessed Tax: $", str(calculate_tax))
+
     
 if __name__=='__main__': 
     main()
