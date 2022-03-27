@@ -157,6 +157,34 @@ def main():
     country = st.sidebar.selectbox("Country", ["United States"])
     
 
+
+        
+    sideb = st.sidebar
+
+
+    geolocator = Nominatim(user_agent="GTA Lookup")
+    geocode = RateLimiter(geolocator.geocode, min_delay_seconds=1)
+    location = geolocator.geocode(street+", "+neighborhood+", "+state+" ,"+country)
+
+
+    try:
+        latitude = location.latitude
+        longitude = location.longitude
+        if (latitude==None or longitude==None):
+            st.sidebar.warning(f"Please check that the {street} is actually in {neighborhood}!")
+    except:
+        st.error('There is an error with your location. Please check.')
+        if street: # If user enters street, do 👇
+            st.write(f'Please check that the {street} is actually in {neighborhood}!')
+        #e = RuntimeError('This is an exception of type RuntimeError')
+        #st.exception(e)
+        #exit ()
+
+    map_data = pd.DataFrame({'lat': [latitude], 'lon': [longitude]})
+
+    st.map(map_data, zoom=15, use_container_width=True) 
+  
+
     
 
     days_to_be_rented = st.sidebar.slider('Days in a Year Expected to Rent', 1,365, 1 )
@@ -172,33 +200,6 @@ def main():
     reviews_per_month = st.sidebar.slider('Reviews per month', 0,58, 1 )
     calculated_host_listings_count = st.sidebar.slider('Number of host listings', 1,327, 1 )
     
-
-        
-    sideb = st.sidebar
-
-
-    geolocator = Nominatim(user_agent="GTA Lookup")
-    geocode = RateLimiter(geolocator.geocode, min_delay_seconds=1)
-    location = geolocator.geocode(street+", "+neighborhood+", "+state+" ,"+country)
-
-
-    try:
-        latitude = location.latitude
-        longitude = location.longitude
-        if latitude and location:
-            st.sidebar.warning(f"Please check that the {street} is actually in {neighborhood}!")
-    except:
-        st.error('There is an error with your location. Please check.')
-        if street: # If user enters street, do 👇
-            st.write(f'Please check that the {street} is actually in {neighborhood}!')
-        #e = RuntimeError('This is an exception of type RuntimeError')
-        #st.exception(e)
-        #exit ()
-
-    map_data = pd.DataFrame({'lat': [latitude], 'lon': [longitude]})
-
-    st.map(map_data, zoom=15, use_container_width=True) 
-  
 
 
     # when 'Predict' is clicked, make the prediction and store it 
