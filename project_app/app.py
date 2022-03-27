@@ -262,12 +262,13 @@ def main():
             all_geom_count = all_geom.groupby('type')['geometry'].count()
             all_geom_count = pd.DataFrame(all_geom_count).reset_index()
             return all_geom, all_geom_count
-        
         all_geom, all_geom_count = processs_all_geom(gdf_amenities, gdf_leisure,gdf_subway, gdf_natural)
-        fig = px.bar(all_geom_count, x='type', y='geometry')
-        st.plotly_chart(fig)
-            
+        
         st.success('Prediction Complete!')
+        
+
+            
+        
         
         html_temp = """ 
         <div style ="background-color:gray;padding:13px"> 
@@ -287,7 +288,8 @@ def main():
         st.info(street)
  
         
-        
+        fig = px.bar(all_geom_count, x='type', y='geometry')
+        st.plotly_chart(fig)
         
         amenities_500 = gdf_amenities.shape[0]
         st.write('Number of restaurants, airports, malls, hotels or pubs:')
@@ -301,6 +303,9 @@ def main():
         leisure_500 = gdf_leisure.shape[0]
         st.write(f'Number of  zoos, theme-parks, water-parks, and stadiums: {leisure_500}')
         st.info(leisure_500)
+  
+        
+        
         user_data, tax_rate  = get_df(room_type_option,neighborhood, minimum_nights, number_of_reviews, reviews_per_month, calculated_host_listings_count, availability_365, amenities_500, leisure_500, subway_500, natural_500)
         
         pred, pred_upper, pred_lower = prediction(user_data)
@@ -318,8 +323,9 @@ def main():
         st.header('Revenue and Tax Rate Calculated')
         annual_revenue=np.round(pred[0]*days_to_be_rented,2)
         calculate_tax=np.round(pred[0]*days_to_be_rented*tax_rate,2)
-        st.info("Revenue: $",str(annual_revenue))
-        st.info("Annual Assessed Tax: $", str(calculate_tax))
+        col1, col2 = st.columns(2)
+        col1.info(f"Revenue: $ {str(annual_revenue)}")
+        col2.info(f"Annual Assessed Tax: $ {str(calculate_tax)}")
         st.caption(f"Tax is calculated considering a tax rate in {neighborhood} of {tax_rate}. ")
         st.caption(f"Revenue is calculated assuming that the unit is rented for {days_to_be_rented} days in a year.")
 
