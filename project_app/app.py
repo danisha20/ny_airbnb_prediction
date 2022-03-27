@@ -185,6 +185,8 @@ def main():
     try:
         latitude = location.latitude
         longitude = location.longitude
+        if latitude and location:
+            st.sidebar.warning(f"Please check that the {street} is actually in {neighborhood}!")
     except:
         st.error('There is an error with your location. Please check.')
         if street: # If user enters street, do 👇
@@ -266,10 +268,14 @@ def main():
         fig.show()
             
         st.success('Prediction Complete!')
-        st.caption(f'Country Selected: {country}')
-        st.caption(f'State Selected: {state}')
-        st.caption(f'Neighborhood Selected: {neighborhood}')
-        st.caption(f'Street Selected: {street}')
+        st.write('Country Selected:')
+        st.info(country)
+        st.write('State Selected')
+        st.info(state)
+        st.write('Neighborhood Selected')
+        st.info(neighborhood)
+        st.write('Street Selected')
+        st.info(street)
  
         
         
@@ -308,14 +314,15 @@ def main():
         
         
         st.header('Revenue and Tax Rate Calculated')
-        st.caption(f"Tax is calculated considering a tax rate in {neighborhood} of {tax_rate}. ")
-        st.caption(f"Revenue is calculated assuming that the unit is rented for {days_to_be_rented} days in a year.")
+
         
-        annual_revenue=np.round(pred[0]*120,2)
+        annual_revenue=np.round(pred[0]*days_to_be_rented,2)
         calculate_tax=np.round(pred[0]*days_to_be_rented*tax_rate,2)
         col1, col2  = st.columns(2)
         col1.info("Revenue: $",str(annual_revenue))
         col2.info("Annual Assessed Tax: $", str(calculate_tax))
+        st.caption(f"Tax is calculated considering a tax rate in {neighborhood} of {tax_rate}. ")
+        st.caption(f"Revenue is calculated assuming that the unit is rented for {days_to_be_rented} days in a year.")
 
     
 if __name__=='__main__': 
