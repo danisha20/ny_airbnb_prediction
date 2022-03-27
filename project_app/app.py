@@ -170,11 +170,10 @@ def main():
     try:
         latitude = location.latitude
         longitude = location.longitude
-        if (latitude==None or longitude==None):
-            st.sidebar.warning(f"Please check that the {street} is actually in {neighborhood}!")
     except:
         st.error('There is an error with your location. Please check.')
         if street: # If user enters street, do 👇
+            st.sidebar.warning(f"Please check that the {street} is actually in {neighborhood}!")
             st.write(f'Please check that the {street} is actually in {neighborhood}!')
         #e = RuntimeError('This is an exception of type RuntimeError')
         #st.exception(e)
