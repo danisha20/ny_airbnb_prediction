@@ -287,9 +287,8 @@ def main():
         st.write('Street Selected')
         st.info(street)
  
-        
         fig = px.bar(all_geom_count, x='type', y='geometry',
-                     labels=dict( geometry="count"))
+                     labels=dict( geometry="count"), title="Number of places around a 500m radio.")
         st.plotly_chart(fig)
         
         amenities_500 = gdf_amenities.shape[0]
@@ -328,7 +327,7 @@ def main():
         col1, col2 = st.columns(2)
         col1.info(f"Revenue: $ {str(annual_revenue)}")
         col2.info(f"Annual Assessed Tax: $ {str(calculate_tax)}")
-        st.caption(f"Tax is calculated considering a tax rate in {neighborhood} of {tax_rate*100} %. ")
+        st.caption(f"Tax is calculated considering a tax rate in {neighborhood} of {np.round(tax_rate*100,2)} %. ")
         st.caption(f"Revenue is calculated assuming that the unit is rented for {days_to_be_rented} days in a year.")
 
     
