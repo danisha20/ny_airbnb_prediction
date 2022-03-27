@@ -239,31 +239,31 @@ def main():
         except:
             natural_500 = 10
             
-        def processs_all_geom(gdf_amenities, gdf_leisure,gdf_subway, gdf_natural):
-            gdf_amenities['Center_point'] = gdf_amenities['geometry'].centroid
-            gdf_leisure['Center_point'] = gdf_leisure['geometry'].centroid
-            gdf_subway['Center_point'] = gdf_subway['geometry'].centroid
-            gdf_natural['Center_point'] = gdf_natural['geometry'].centroid
-            gdf_amenities["long"] = gdf_amenities.Center_point.map(lambda p: p.x)
-            gdf_amenities["lat"] = gdf_amenities.Center_point.map(lambda p: p.y)
-            gdf_leisure["long"] = gdf_leisure.Center_point.map(lambda p: p.x)
-            gdf_leisure["lat"] = gdf_leisure.Center_point.map(lambda p: p.y)
-            gdf_subway["long"] = gdf_subway.Center_point.map(lambda p: p.x)
-            gdf_subway["lat"] = gdf_subway.Center_point.map(lambda p: p.y)
-            gdf_natural["long"] = gdf_natural.Center_point.map(lambda p: p.x)
-            gdf_natural["lat"] = gdf_natural.Center_point.map(lambda p: p.y)
-            gdf_amenities['type'] = 'amenities'
-            gdf_leisure['type'] = 'leisure'
-            gdf_subway['type'] = 'subway'
-            gdf_natural['type'] = 'natural'
-            all_geom = pd.concat([gdf_amenities,gdf_leisure,gdf_subway,gdf_natural], ignore_index=True)
-            all_geom_count = all_geom.groupby('type')['geometry'].count()
-            all_geom_count = pd.DataFrame(all_geom_count).reset_index()
-            return all_geom, all_geom_count
+        # def processs_all_geom(gdf_amenities, gdf_leisure,gdf_subway, gdf_natural):
+        #     gdf_amenities['Center_point'] = gdf_amenities['geometry'].centroid
+        #     gdf_leisure['Center_point'] = gdf_leisure['geometry'].centroid
+        #     gdf_subway['Center_point'] = gdf_subway['geometry'].centroid
+        #     gdf_natural['Center_point'] = gdf_natural['geometry'].centroid
+        #     gdf_amenities["long"] = gdf_amenities.Center_point.map(lambda p: p.x)
+        #     gdf_amenities["lat"] = gdf_amenities.Center_point.map(lambda p: p.y)
+        #     gdf_leisure["long"] = gdf_leisure.Center_point.map(lambda p: p.x)
+        #     gdf_leisure["lat"] = gdf_leisure.Center_point.map(lambda p: p.y)
+        #     gdf_subway["long"] = gdf_subway.Center_point.map(lambda p: p.x)
+        #     gdf_subway["lat"] = gdf_subway.Center_point.map(lambda p: p.y)
+        #     gdf_natural["long"] = gdf_natural.Center_point.map(lambda p: p.x)
+        #     gdf_natural["lat"] = gdf_natural.Center_point.map(lambda p: p.y)
+        #     gdf_amenities['type'] = 'amenities'
+        #     gdf_leisure['type'] = 'leisure'
+        #     gdf_subway['type'] = 'subway'
+        #     gdf_natural['type'] = 'natural'
+        #     all_geom = pd.concat([gdf_amenities,gdf_leisure,gdf_subway,gdf_natural], ignore_index=True)
+        #     all_geom_count = all_geom.groupby('type')['geometry'].count()
+        #     all_geom_count = pd.DataFrame(all_geom_count).reset_index()
+        #     return all_geom, all_geom_count
         
-        all_geom, all_geom_count = processs_all_geom(gdf_amenities, gdf_leisure,gdf_subway, gdf_natural)
-        fig = px.bar(all_geom_count, x='type', y='geometry')
-        fig.show()
+        # all_geom, all_geom_count = processs_all_geom(gdf_amenities, gdf_leisure,gdf_subway, gdf_natural)
+        # fig = px.bar(all_geom_count, x='type', y='geometry')
+        # fig.show()
             
         st.success('Prediction Complete!')
         st.caption(f'Country Selected: {country}')
