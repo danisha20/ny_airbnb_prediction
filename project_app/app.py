@@ -219,25 +219,55 @@ def main():
         try:
             gdf_amenities = ox.geometries.geometries_from_point((latitude, longitude),dist = 500, tags = tag_amenities) # Boundary to search within
         except:
-            gdf_amenities = 10
+            amenities_500 = 10
         with st.spinner('Calculating the number of leisure locations in a 500m radio...'):
             time.sleep(10)
         try:
-            gdf_leisure = ox.geometries.geometries_from_point((latitude, longitude),dist = 500, tags = tag_leisure) # Boundary to search within
+            leisure_500 = ox.geometries.geometries_from_point((latitude, longitude),dist = 500, tags = tag_leisure) # Boundary to search within
         except:
             gdf_leisure = 10
         with st.spinner('Calculating the number of train stations in a 500m radio...'):
             time.sleep(10)
         try: 
-            gdf_subway= ox.geometries.geometries_from_point((latitude, longitude),dist = 500, tags = tag_subway) # Boundary to search within
+            gdf_subway= ox.geometries.geometries_from_point((latitude, longitude),dist = 500, tags = tag_subway)# Boundary to search within
         except:
-            gdf_subway = 10
+            subway_500 = 10
         with st.spinner('Calculating the number of natural resources in a 500m radio...'):
             time.sleep(10)
         try:
             gdf_natural = ox.geometries.geometries_from_point((latitude, longitude),dist = 500, tags = tag_natural) # Boundary to search within
         except:
-            gdf_natural = 10
+            natural_500 = 10
+            
+        def processs_all_geom(gdf_amenities, gdf_leisure,gdf_subway, gdf_natural):
+            gdf_amenities = gdf_amenities.loc[:,['amenity','geometry']]
+            gdf_leisure = gdf_leisure.loc[:,['leisure','geometry']]
+            gdf_subway = gdf_subway.loc[:,['building','geometry']]
+            gdf_natural = gdf_natural.loc[:,['natural','geometry']]
+            gdf_amenities['Center_point'] = gdf_amenities['geometry'].centroid
+            gdf_leisure['Center_point'] = gdf_leisure['geometry'].centroid
+            gdf_subway['Center_point'] = gdf_subway['geometry'].centroid
+            gdf_natural['Center_point'] = gdf_natural['geometry'].centroid
+            gdf_amenities["long"] = gdf_amenities.Center_point.map(lambda p: p.x)
+            gdf_amenities["lat"] = gdf_amenities.Center_point.map(lambda p: p.y)
+            gdf_leisure["long"] = gdf_leisure.Center_point.map(lambda p: p.x)
+            gdf_leisure["lat"] = gdf_leisure.Center_point.map(lambda p: p.y)
+            gdf_subway["long"] = gdf_subway.Center_point.map(lambda p: p.x)
+            gdf_subway["lat"] = gdf_subway.Center_point.map(lambda p: p.y)
+            gdf_natural["long"] = gdf_natural.Center_point.map(lambda p: p.x)
+            gdf_natural["lat"] = gdf_natural.Center_point.map(lambda p: p.y)
+            gdf_amenities['type'] = 'amenities'
+            gdf_leisure['type'] = 'leisure'
+            gdf_subway['type'] = 'subway'
+            gdf_natural['type'] = 'natural'
+            all_geom = pd.concat([gdf_amenities,gdf_leisure,gdf_subway,gdf_natural], ignore_index=True)
+            all_geom_count = all_geom.groupby('type')['geometry'].count()
+            all_geom_count = pd.DataFrame(all_geom_count).reset_index()
+            return all_geom, all_geom_count
+        
+        all_geom, all_geom_count = processs_all_geom(gdf_amenities, gdf_leisure,gdf_subway, gdf_natural)
+        fig = px.bar(all_geom_count, x='type', y='geometry')
+        fig.show()
             
         st.success('Prediction Complete!')
         st.caption(f'Country Selected: {country}')
