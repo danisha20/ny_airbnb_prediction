@@ -25,7 +25,7 @@ from geopy.extra.rate_limiter import RateLimiter
 from PIL import Image
 import pathlib
 #from PIL import Image
-@st.cache(hash_funcs={"MyUnhashableClass": lambda _: None})
+@st.cache(ttl=24*3600)
 # loading the trained model
 def load_model():
     pickle_in = open(pathlib.Path.cwd().joinpath('project_app','model_regressor.pkl'), 'rb') 
@@ -208,10 +208,7 @@ def main():
     reviews_per_month = st.sidebar.slider('Reviews per month', 0,58, 1 )
     calculated_host_listings_count = st.sidebar.slider('Number of host listings', 1,327, 1 )
     
-
-
-    # when 'Predict' is clicked, make the prediction and store it 
-    if sideb.button("Predict Price"): 
+    def api_request():
         ox.config(log_console=True, use_cache=True)
 
         tag_leisure = {
@@ -221,8 +218,6 @@ def main():
         tag_amenities = {'amenity': ['restaurant', 'pub', 'hotel'],
                 'building': ['hotel','transportation','airport'],'store':'mall',
                 'tourism': 'hotel'}
-        
-        
 
         
         with st.spinner('Calculating the number of amenities in a 500m radio...'):
@@ -249,6 +244,13 @@ def main():
             gdf_natural = ox.geometries.geometries_from_point((latitude, longitude),dist = 500, tags = tag_natural) # Boundary to search within
         except:
             natural_500 = 10
+            
+        return gdf_amenities, gdf_leisure, gdf_subway,  gdf_natural, amenities_500, leisure_500, subway_500, natural_500
+
+
+    # when 'Predict' is clicked, make the prediction and store it 
+    if sideb.button("Predict Price"): 
+        gdf_amenities, gdf_leisure, gdf_subway,  gdf_natural, amenities_500, leisure_500, subway_500, natural_500 = api_request()
             
         def processs_all_geom(gdf_amenities, gdf_leisure,gdf_subway, gdf_natural):
             gdf_amenities['Center_point'] = gdf_amenities['geometry'].centroid
