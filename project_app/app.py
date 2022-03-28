@@ -25,7 +25,7 @@ from geopy.extra.rate_limiter import RateLimiter
 from PIL import Image
 import pathlib
 #from PIL import Image
-@st.cache(ttl=24*3600)
+@st.cache
 # loading the trained model
 def load_model():
     pickle_in = open(pathlib.Path.cwd().joinpath('project_app','model_regressor.pkl'), 'rb') 
@@ -207,7 +207,7 @@ def main():
 
     reviews_per_month = st.sidebar.slider('Reviews per month', 0,58, 1 )
     calculated_host_listings_count = st.sidebar.slider('Number of host listings', 1,327, 1 )
-    
+    @st.cache
     def api_request():
         ox.config(log_console=True, use_cache=True)
 
