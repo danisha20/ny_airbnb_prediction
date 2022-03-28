@@ -25,30 +25,25 @@ from geopy.extra.rate_limiter import RateLimiter
 from PIL import Image
 import pathlib
 #from PIL import Image
-@st.cache(suppress_st_warning=True)
+
 # loading the trained model
-def load_model():
-    
-    st.write('model loaded successfully')
-    pickle_in = open(pathlib.Path.cwd().joinpath('project_app','model_regressor.pkl'), 'rb') 
-    model_regressor = pickle.load(pickle_in)
 
-    pickle_in2 = open(pathlib.Path.cwd().joinpath('project_app','scaler.sav'), 'rb') 
-    scaler_regressor = pickle.load(pickle_in2)
+pickle_in = open(pathlib.Path.cwd().joinpath('project_app','model_regressor.pkl'), 'rb') 
+model_regressor = pickle.load(pickle_in)
+
+pickle_in2 = open(pathlib.Path.cwd().joinpath('project_app','scaler.sav'), 'rb') 
+scaler_regressor = pickle.load(pickle_in2)
 
 
-    pickle_in3 = open(pathlib.Path.cwd().joinpath('project_app','model_regressor_uq.pkl'), 'rb') 
-    model_regressor_upper = pickle.load(pickle_in3)
+pickle_in3 = open(pathlib.Path.cwd().joinpath('project_app','model_regressor_uq.pkl'), 'rb') 
+model_regressor_upper = pickle.load(pickle_in3)
 
 
-    pickle_in4 = open(pathlib.Path.cwd().joinpath('project_app','model_regressor_lq.pkl'), 'rb') 
-    model_regressor_lower = pickle.load(pickle_in4)
-    
-    return model_regressor, scaler_regressor, model_regressor_upper, model_regressor_lower
+pickle_in4 = open(pathlib.Path.cwd().joinpath('project_app','model_regressor_lq.pkl'), 'rb') 
+model_regressor_lower = pickle.load(pickle_in4)
 
-st.write('loading cached functions')
-model_regressor, scaler_regressor, model_regressor_upper, model_regressor_lower = copy.deepcopy(load_model())
 
+@st.cache(suppress_st_warning=True)
 
 def get_df(room_type_option,neighborhood,  minimum_nights, number_of_reviews, reviews_per_month, calculated_host_listings_count, availability_365, amenities_500, leisure_500, subway_500, natural_500):
  
