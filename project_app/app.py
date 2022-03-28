@@ -206,7 +206,11 @@ def main():
     reviews_per_month = st.sidebar.slider('Reviews per month', 0,58, 1 )
     calculated_host_listings_count = st.sidebar.slider('Number of host listings', 1,327, 1 )
  
-    def api_request():
+
+
+    # when 'Predict' is clicked, make the prediction and store it 
+    if sideb.button("Predict Price"): 
+        
         ox.config(log_console=True, use_cache=True)
 
         tag_leisure = {
@@ -243,12 +247,6 @@ def main():
         except:
             natural_500 = 10
             
-        return gdf_amenities, gdf_leisure, gdf_subway,  gdf_natural, amenities_500, leisure_500, subway_500, natural_500
-
-
-    # when 'Predict' is clicked, make the prediction and store it 
-    if sideb.button("Predict Price"): 
-        gdf_amenities, gdf_leisure, gdf_subway,  gdf_natural, amenities_500, leisure_500, subway_500, natural_500 = api_request()
             
         def processs_all_geom(gdf_amenities, gdf_leisure,gdf_subway, gdf_natural):
             gdf_amenities['Center_point'] = gdf_amenities['geometry'].centroid
