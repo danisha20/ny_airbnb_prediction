@@ -25,7 +25,7 @@ from geopy.extra.rate_limiter import RateLimiter
 from PIL import Image
 import pathlib
 #from PIL import Image
-@st.cache(suppress_st_warning=True) 
+@st.cache(hash_funcs={"MyUnhashableClass": lambda _: None})
 # loading the trained model
 def load_model():
     pickle_in = open(pathlib.Path.cwd().joinpath('project_app','model_regressor.pkl'), 'rb') 
