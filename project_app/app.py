@@ -68,7 +68,7 @@ def get_df(room_type_option,neighborhood,  minimum_nights, number_of_reviews, re
           NG_Manhattan=0
           NG_Queens=0
           NG_Staten_Island=0
-          tax_rate=0.14
+          tax_rate=0.13
           
     elif (neighborhood=='Queens'):
         NG_Brooklyn=0
@@ -83,6 +83,14 @@ def get_df(room_type_option,neighborhood,  minimum_nights, number_of_reviews, re
         NG_Queens=0
         NG_Staten_Island=1
         tax_rate=0.10
+        
+    elif neighborhood=='Bronx':
+        NG_Brooklyn=0
+        NG_Manhattan=0
+        NG_Queens=0
+        NG_Staten_Island=0
+        tax_rate=0.14
+        
     else:
         NG_Brooklyn=0
         NG_Manhattan=0
