@@ -19,7 +19,7 @@ import geopandas as gpd
 import pandas as pd
 import geopy
 import osmnx as ox
-
+import copy
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
 from PIL import Image
@@ -28,6 +28,8 @@ import pathlib
 @st.cache
 # loading the trained model
 def load_model():
+    
+    st.write('model loaded successfully')
     pickle_in = open(pathlib.Path.cwd().joinpath('project_app','model_regressor.pkl'), 'rb') 
     model_regressor = pickle.load(pickle_in)
 
@@ -44,7 +46,8 @@ def load_model():
     
     return model_regressor, scaler_regressor, model_regressor_upper, model_regressor_lower
 
-model_regressor, scaler_regressor, model_regressor_upper, model_regressor_lower = load_model()
+st.write('loading cached functions')
+model_regressor, scaler_regressor, model_regressor_upper, model_regressor_lower = copy.deepcopy(load_model())
 
 
 def get_df(room_type_option,neighborhood,  minimum_nights, number_of_reviews, reviews_per_month, calculated_host_listings_count, availability_365, amenities_500, leisure_500, subway_500, natural_500):
@@ -207,7 +210,7 @@ def main():
 
     reviews_per_month = st.sidebar.slider('Reviews per month', 0,58, 1 )
     calculated_host_listings_count = st.sidebar.slider('Number of host listings', 1,327, 1 )
-    @st.cache
+ 
     def api_request():
         ox.config(log_console=True, use_cache=True)
 
