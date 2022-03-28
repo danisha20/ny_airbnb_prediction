@@ -25,7 +25,7 @@ from geopy.extra.rate_limiter import RateLimiter
 from PIL import Image
 import pathlib
 #from PIL import Image
-@st.cache
+@st.cache(suppress_st_warning=True)
 # loading the trained model
 def load_model():
     
