@@ -304,7 +304,7 @@ def main():
         st.write(f'Number of Train Stations:')
         st.info(subway_500)
         natural_500 = gdf_natural.shape[0]
-        st.write(f'Number of Baches and Parks:')
+        st.write(f'Number of Beaches and Parks:')
         st.info(natural_500)
         leisure_500 = gdf_leisure.shape[0]
         st.write(f'Number of  zoos, theme-parks, water-parks, and stadiums:')
