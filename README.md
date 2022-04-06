@@ -2,5 +2,5 @@
 
 Code for the exploration, modeling and proof of concept development of a regressor created to predict airbnb listing's price ranges. 
 
-The Streamlit app for NY price prediction is 
+The Streamlit app for NY price prediction can be accessed in : 
 https://share.streamlit.io/danisha20/ny_airbnb/main/project_app/app.py
